@@ -20,15 +20,15 @@
             background-color: #fce4ec;
             margin: 0;
             font-family: 'Georgia', serif;
+            overflow: hidden; /* Prevents scrollbars from falling hearts */
         }
 
-        /* The Container */
         .envelop-wrapper {
             position: relative;
             cursor: pointer;
+            z-index: 10;
         }
 
-        /* Hide the checkbox */
         #open {
             display: none;
         }
@@ -41,7 +41,6 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        /* The Front Flaps */
         .envelope::before {
             content: "";
             position: absolute;
@@ -52,7 +51,6 @@
             border-left: 150px solid var(--color-env);
         }
 
-        /* The Top Flap (The part that opens) */
         .flap {
             position: absolute;
             top: 0;
@@ -66,7 +64,6 @@
             z-index: 3;
         }
 
-        /* The Letter */
         .letter {
             position: absolute;
             bottom: 0;
@@ -79,16 +76,8 @@
             box-sizing: border-box;
             transition: transform 0.4s ease;
             z-index: 1;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
         }
 
-        .letter p {
-            font-size: 16px;
-            color: #444;
-            line-height: 1.5;
-        }
-
-        /* Heart Icon */
         .heart {
             position: absolute;
             top: 50%;
@@ -128,23 +117,72 @@
             transform: translate(-50%, -150px) rotate(45deg) scale(0.5);
             opacity: 0;
         }
+
+        /* Falling Hearts Styles */
+        .falling-heart {
+            position: fixed;
+            top: -10px;
+            color: var(--color-heart);
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
     </style>
 </head>
 <body>
 
-    <input type="checkbox" id="open">
+    <input type="checkbox" id="open" onchange="toggleHearts(this)">
     
     <label class="envelop-wrapper" for="open">
         <div class="envelope">
             <div class="flap"></div>
             <div class="letter">
-                <p>My Dearest,</p>
-                <p>You make every day brighter just by being in it.</p>
+                <p>My Zayney,</p>
+                <p>Congrats! I am so proud of you on finishing your last ever exam at OTU! -Bug.</p>
                 <p>❤️</p>
             </div>
             <div class="heart"></div>
         </div>
     </label>
+
+    <script>
+        let heartInterval;
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('falling-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's'; // Between 2-5 seconds
+            heart.style.opacity = Math.random();
+            heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+            
+            document.body.appendChild(heart);
+
+            // Remove heart after it falls to keep the page clean
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function toggleHearts(checkbox) {
+            if (checkbox.checked) {
+                // Start creating hearts every 300ms
+                heartInterval = setInterval(createHeart, 300);
+            } else {
+                // Stop creating hearts
+                clearInterval(heartInterval);
+            }
+        }
+    </script>
 
 </body>
 </html>
