@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Love Letter</title>
+    <style>
+        :root {
+            --color-env: #ffb7b2;
+            --color-env2: #ff9aa2;
+            --color-letter: #ffffff;
+            --color-heart: #ff4d6d;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fce4ec;
+            margin: 0;
+            font-family: 'Georgia', serif;
+        }
+
+        /* The Container */
+        .envelop-wrapper {
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Hide the checkbox */
+        #open {
+            display: none;
+        }
+
+        .envelope {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background-color: var(--color-env);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        /* The Front Flaps */
+        .envelope::before {
+            content: "";
+            position: absolute;
+            z-index: 2;
+            border-top: 100px solid transparent;
+            border-right: 150px solid var(--color-env2);
+            border-bottom: 100px solid var(--color-env2);
+            border-left: 150px solid var(--color-env);
+        }
+
+        /* The Top Flap (The part that opens) */
+        .flap {
+            position: absolute;
+            top: 0;
+            width: 0;
+            height: 0;
+            border-left: 150px solid transparent;
+            border-right: 150px solid transparent;
+            border-top: 100px solid var(--color-env2);
+            transform-origin: top;
+            transition: transform 0.4s ease;
+            z-index: 3;
+        }
+
+        /* The Letter */
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 10px;
+            width: 280px;
+            height: 180px;
+            background: var(--color-letter);
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: transform 0.4s ease;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+
+        .letter p {
+            font-size: 16px;
+            color: #444;
+            line-height: 1.5;
+        }
+
+        /* Heart Icon */
+        .heart {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            background: var(--color-heart);
+            z-index: 4;
+            transform: translate(-50%, -20%) rotate(45deg);
+            transition: transform 0.4s ease;
+        }
+
+        .heart:before, .heart:after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--color-heart);
+            border-radius: 50%;
+        }
+
+        .heart:before { top: -15px; left: 0; }
+        .heart:after { left: -15px; top: 0; }
+
+        /* Animation Logic */
+        #open:checked + .envelop-wrapper .flap {
+            transform: rotateX(180deg);
+            z-index: 0;
+        }
+
+        #open:checked + .envelop-wrapper .letter {
+            transform: translateY(-100px);
+            z-index: 2;
+        }
+
+        #open:checked + .envelop-wrapper .heart {
+            transform: translate(-50%, -150px) rotate(45deg) scale(0.5);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="checkbox" id="open">
+    
+    <label class="envelop-wrapper" for="open">
+        <div class="envelope">
+            <div class="flap"></div>
+            <div class="letter">
+                <p>My Dearest,</p>
+                <p>You make every day brighter just by being in it.</p>
+                <p>❤️</p>
+            </div>
+            <div class="heart"></div>
+        </div>
+    </label>
+
+</body>
+</html>
